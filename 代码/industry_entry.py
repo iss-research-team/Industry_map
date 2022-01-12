@@ -42,7 +42,7 @@ def industry_entry():
             is_symbol_show=True,
             label_opts=opts.LabelOpts(is_show=False),
         )
-            .render("basic_line_chart.html")
+            .render("industry_entry.html")
     )
 
 if __name__ == '__main__':
