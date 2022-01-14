@@ -78,7 +78,7 @@ def wc_show(word_counts,word_num,height,width):
     wc.scale = 4  # 改善分辨率
     wc.color_func = random_color_func  # 自定义字体色调
     wc.generate_from_frequencies(word_counts)  # 从字典生成词云
-    wc.to_file('词云.jpg')  # 保存为背景图1
+    wc.to_file('./output/词云.jpg')  # 保存为背景图1
     # image_colors = wordcloud.ImageColorGenerator(mask)  # 从背景图建立颜色方案
     # wc.recolor(color_func=image_colors)  # 将词云颜色设置为背景图方案
     plt.imshow(wc)  # 显示词云
