@@ -64,6 +64,6 @@ c = (
         title_opts=opts.TitleOpts(title="流入广东企业分布", pos_right="center", pos_top="5%")
     )
         # 全局配置项，设置动画、颜色、标题等
-        .render("data/流入广东企业分布.html")
+        .render("output/流入广东企业分布.html")
     # 把制作完成的图表输出为html文件
 )
