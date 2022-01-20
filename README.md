@@ -13,7 +13,8 @@
 │         ├── industry_entry  
 │         ├── patent_family_analysis  
 │         ├── Policy_text_analysis  #政策文本分析
-│         ├── Product_Competitiveness_Analysis  #产品竞争力
+│         ├── Product_Competitiveness_Analysis  #产品竞争力分析
+│         ├── enterprise_migration_dynamic  #企业迁移分析
 │         └── tree  
 └── README.md        
 ```
