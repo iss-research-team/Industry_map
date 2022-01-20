@@ -73,7 +73,7 @@ class DataProcess:
         self.file = csv.reader(open(self.path, "r", encoding="utf8"))
         self.data = {"All": defaultdict(int), "Dead": defaultdict(int), "Alive": defaultdict(int)}
         # 专利号前两位与国家名称 字典
-        self.trans = json.load(open("../data/country.json", "r", encoding="utf8"))
+        self.trans = json.load(open("data\\country.json", "r", encoding="utf8"))
 
         next(self.file)
         # 打印检索式，并且跳过前面两行总览信息
@@ -111,7 +111,7 @@ class DataProcess:
 
 if __name__ == '__main__':
     # 世界地图数据
-    task = DataProcess("../data/patent_demo.csv")
+    task = DataProcess("data\\patent_demo.csv")
     task.data_process()
 
     test = DrawPage(task.data)

@@ -19,7 +19,7 @@ def industry_entry():
     for index in range(len(year) - 1):
             res[index] = (float(x[index]) / float(y[index - 1]))
     (
-        Line()
+        Line(init_opts=opts.InitOpts(width="60%"))
             .set_global_opts(
             tooltip_opts=opts.TooltipOpts(is_show=False),
             xaxis_opts=opts.AxisOpts(type_="category"),

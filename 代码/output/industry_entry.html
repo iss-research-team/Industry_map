@@ -7,11 +7,11 @@
 
 </head>
 <body>
-    <div id="ccb95d780a5a422191602ba6b3271ba2" class="chart-container" style="width:900px; height:500px;"></div>
+    <div id="91e500b7cae74d13a717fba48ffacec9" class="chart-container" style="width:60%; height:500px;"></div>
     <script>
-        var chart_ccb95d780a5a422191602ba6b3271ba2 = echarts.init(
-            document.getElementById('ccb95d780a5a422191602ba6b3271ba2'), 'white', {renderer: 'canvas'});
-        var option_ccb95d780a5a422191602ba6b3271ba2 = {
+        var chart_91e500b7cae74d13a717fba48ffacec9 = echarts.init(
+            document.getElementById('91e500b7cae74d13a717fba48ffacec9'), 'white', {renderer: 'canvas'});
+        var option_91e500b7cae74d13a717fba48ffacec9 = {
     "animation": true,
     "animationThreshold": 2000,
     "animationDuration": 1000,
@@ -269,7 +269,10 @@
         }
     ]
 };
-        chart_ccb95d780a5a422191602ba6b3271ba2.setOption(option_ccb95d780a5a422191602ba6b3271ba2);
+        chart_91e500b7cae74d13a717fba48ffacec9.setOption(option_91e500b7cae74d13a717fba48ffacec9);
+            window.addEventListener('resize', function(){
+                chart_91e500b7cae74d13a717fba48ffacec9.resize();
+            })
     </script>
 </body>
 </html>
