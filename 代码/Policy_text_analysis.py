@@ -12,6 +12,7 @@ import jieba
 import jieba.analyse
 from gensim import corpora,models,similarities
 import json
+import os
 
 
 def word_frequency(txtpath, stopword):
@@ -95,14 +96,14 @@ def get_tf_idf(txtpath, top):
     """
     with open(txtpath, 'r', encoding="utf-8") as file:
         text = file.read()
-    tags = jieba.analyse.extract_tags(text, topK=top)
+    tags = jieba.analyse.extract_tags(text, topK=top, allowPOS=('ns','n'))
     return '、'.join(tags)
 
 
 def get_textrank(txtpath, top):
     """textrank关健词获取
         输入：文本、词的数量
-        输出：tf_idf前top个词
+        输出：textrank前top个关健词
     """
     with open(txtpath, 'r', encoding="utf-8") as file:
         text = file.read()
@@ -110,34 +111,43 @@ def get_textrank(txtpath, top):
     return '、'.join(tags)
 
 
-def text_similarity(txtpath1,txtpath2,txtpah):
-    """ti_idf文本相似度
+def text_similarity(txtpath,txtpah):
+    """t_idf文本相似度
         输入：文本
         输出：相似度
     """
-    list1 = jieba.lcut(open(txtpath1, encoding='utf-8').read())
-    list2 = jieba.lcut(open(txtpath2, encoding='utf-8').read())
-    list3 = jieba.lcut(open(txtpah, encoding='utf-8').read())
-    list1_2 = [list1, list2]
-    
+    policy_text_list=[]
+    for file in os.listdir(txtpath):
+        file_path = os.path.join(txtpath, file)
+        policy_text_list.append(jieba.lcut(open(file_path, encoding='utf-8').read()))
+
+    mypolicy = jieba.lcut(open(txtpah, encoding='utf-8').read())
     # 创建词典
-    dictionary = corpora.Dictionary(list1_2)
+    dictionary = corpora.Dictionary(policy_text_list)
     # 获取语料库
-    corpus = [dictionary.doc2bow(i) for i in list1_2]
+    corpus = [dictionary.doc2bow(i) for i in policy_text_list]
     tfidf = models.TfidfModel(corpus)
     # 特征数
     featureNUM = len(dictionary.token2id.keys())
     # 通过TfIdf对整个语料库进行转换并将其编入索引，以准备相似性查询
     index = similarities.SparseMatrixSimilarity(tfidf[corpus], num_features=featureNUM)
     # 稀疏向量.dictionary.doc2bow(doc)是把文档doc变成一个稀疏向量，[(0, 1), (1, 1)]，表明id为0,1的词汇出现了1次，至于其他词汇，没有出现。
-    new_vec = dictionary.doc2bow(list3)
+    new_vec = dictionary.doc2bow(mypolicy)
     # 计算向量相似度
     sim = index[tfidf[new_vec]]
-    return sim
+    i=0
+    res=[]
+    for file in os.listdir(txtpath):
+        newdict=[file,sim[i]]
+        res.append(newdict)
+        i+=1
+    res.sort(key=lambda x:x[1],reverse=True)
+    return res
 
 if __name__ == "__main__":
     # dic = word_frequency("./data/policy.txt", "./data/stopword.txt")
-    # wc_show(dic, 100, 1200, 1600)
-    # print(get_tf_idf("./data/policy.txt",10))
-    # print(get_textrank("./data/policy.txt",10))
-    print(text_similarity("./data/policy1.txt","./data/policy2.txt","./data/policy.txt"))
+    # # wc_show(dic, 100, 1200, 1600)
+    print(get_tf_idf("./data/policy.txt", 10))
+    print(get_textrank("./data/policy.txt",10))
+    print(text_similarity("./data/policy-text","./data/policy.txt"))
+
