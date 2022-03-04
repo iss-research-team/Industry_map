@@ -6,14 +6,17 @@
 import wordcloud
 import matplotlib.pyplot as plt
 from random import randint
-from PIL import Image
-import numpy as np
 import jieba
 import jieba.analyse
 from gensim import corpora,models,similarities
-import json
 import os
+import xmnlp
 
+
+plt.rcParams['font.sans-serif']=['SimHei'] #用来正常显示中文标签
+plt.rcParams['axes.unicode_minus']=False #用来正常显示负号
+
+xmnlp.set_model('./model/xmnlp-onnx-models')
 
 def word_frequency(txtpath, stopword):
     """词频获取 
@@ -43,7 +46,6 @@ def word_frequency(txtpath, stopword):
     for word in stopwordlist:
         if word in dic:
             dic.pop(word)
-
     print(sorted(dic.items(), key=lambda kv: (kv[1], kv[0]), reverse=True))
     return dic
 
@@ -144,10 +146,37 @@ def text_similarity(txtpath,txtpah):
     res.sort(key=lambda x:x[1],reverse=True)
     return res
 
-if __name__ == "__main__":
-    # dic = word_frequency("./data/policy.txt", "./data/stopword.txt")
-    # # wc_show(dic, 100, 1200, 1600)
-    print(get_tf_idf("./data/policy.txt", 10))
-    print(get_textrank("./data/policy.txt",10))
-    print(text_similarity("./data/policy-text","./data/policy.txt"))
 
+def sentiment_analysis(txtpath):
+    """情感分析
+        输入：文本
+        输出：情感分析结果
+    """
+    with open(txtpath, 'r', encoding="utf-8") as file:
+        text = file.read()
+    sentiment_list=[xmnlp.sentiment(text)[0],xmnlp.sentiment(text)[1]]
+    labels = ['negative', 'positive']
+    plt.pie(x=sentiment_list, labels=labels,autopct='%0.1f%%')
+    plt.show()
+
+def keyword_bar(txtpath,stopword,n):
+    dic=word_frequency(txtpath, stopword)
+    keyword_list=sorted(dic.items(), key=lambda kv: (kv[1], kv[0]), reverse=True)
+    x=[]
+    y=[]
+    for i in range(n):
+        x.append(keyword_list[i][0])
+        y.append(keyword_list[i][1])
+    fig, ax = plt.subplots(figsize=(10, 7))
+    ax.bar(x=x, height=y)
+    ax.set_title("政策文本词频统计", fontsize=15)
+    plt.show()
+
+if __name__ == "__main__":
+    # dic = word_frequency("./data/政策文本/1.txt", "./data/stopword.txt")
+    # wc_show(dic, 100, 1200, 1600)
+    # print(get_tf_idf("./data/policy.txt", 10))
+    # print(get_textrank("./data/policy.txt",10))
+    # print(text_similarity("./data/政策文本","./data/政策文本/1.txt"))
+    # sentiment_analysis("./data/政策文本/0.txt")
+    keyword_bar("./data/政策文本/1.txt", "./data/stopword.txt",10)
